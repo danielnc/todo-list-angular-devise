@@ -1,0 +1,26 @@
+<ng-include src="'<%= asset_path 'sessions/destroy.html.erb' %>'"></ng-include>
+
+<form name="createTodo" ng-submit="create()">
+  <div class="page-header">
+    <h1>Create Todo</h1>
+  </div>
+
+  <label for="name">Name:</label>
+  <input type="text" ng-model="todo.name" required/>
+
+  <label for="description">Description:</label>
+  <textarea ng-model="todo.description" required/>
+
+  <label for="priority">Priority:</label>
+  <select ng-model="todo.priority" ng-options="priority for priority in [1,2,3]" required></select>
+
+  <label for="completed">Completed:</label>
+  <input type="checkbox" ng-model="todo.completed"/>
+
+  <label for="due_date">Due Date:</label>
+  <input type="text" data-date-format="yyyy-mm-dd hh:ii" ng-model="todo.due_date" bs-datepicker required>
+
+  <hr>
+  <button type="submit" ng-disabled="!createTodo.$valid">Create</button>
+</form>
+<a href="/todos">Back to Todo list</a>

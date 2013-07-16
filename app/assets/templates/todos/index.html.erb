@@ -1,0 +1,7 @@
+<ng-include src="'<%= asset_path 'sessions/destroy.html.erb' %>'"></ng-include>
+
+<div class="page-header">
+  <h1>Todos</h1>
+</div>
+<a href="/todos/new">New Todo</a>
+<div id="todoList" class="gridStyle" ng-grid="todoGridOptions"></div>

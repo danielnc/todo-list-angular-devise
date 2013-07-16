@@ -1,0 +1,58 @@
+app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise("/todos");
+
+  $stateProvider.state("default", {
+    abstract: true,
+    views: {
+      "": {
+        controller: "ApplicationController",
+        templateUrl: "<%= asset_path "layouts/default.html.erb" %>"
+      }
+    }
+  }).state("todos", {
+    parent: "default",
+    url: "/todos",
+    views: {
+      "": {
+        controller: "TodosController",
+        templateUrl: "<%= asset_path "todos/index.html.erb" %>"
+      }
+    }
+  }).state("new", {
+    parent: "todos",
+    url: "/new",
+    views: {
+      "@default": {
+        controller: "TodosController",
+        templateUrl: "<%= asset_path "todos/new.html.erb" %>"
+      }
+    }
+  }).state("edit", {
+    parent: "todos",
+    url: "/:id/edit",
+    views: {
+      "@default": {
+        controller: "TodosController",
+        templateUrl: "<%= asset_path "todos/edit.html.erb" %>"
+      }
+    }
+  }).state("login", {
+    parent: "default",
+    url: "/login",
+    views: {
+      "": {
+        controller: "SessionsController",
+        templateUrl: "<%= asset_path "sessions/new.html.erb" %>"
+      }
+    }
+  }).state("sign_up", {
+    parent: "default",
+    url: "/sign_up",
+    views: {
+      "": {
+        controller: "RegistrationsController",
+        templateUrl: "<%= asset_path "registrations/new.html.erb" %>"
+      }
+    }
+  });
+}]);

@@ -1,0 +1,88 @@
+angular.module('todo-list.controllers').controller("TodosController", ['$scope', '$http', '$location', '$state', '$stateParams', 'Todo', function($scope, $http, $location, $state, $stateParams, Todo) {
+
+  $scope.todos = [];
+  $scope.todo = {};
+  // =========================================================================
+  // Index
+  // =========================================================================
+  if ($state.current.name === 'todos') {
+    $scope.todoGridOptions = {
+        data: 'todos',
+        enableCellSelection: true,
+        multiSelect: false,
+        afterSelectionChange: function(rowItem, evt) {
+          if (rowItem.selected) $state.transitionTo('edit', {id: rowItem.entity.id});
+        },
+        columnDefs: [
+        {field:'name', displayName:'Name'},
+        {field:'priority', displayName:'Priority'},
+        {field:'description', displayName:'Description'},
+        {field:'completed', displayName:'Completed?', cellTemplate: '<div class="ngCellText">{{row.getProperty(col.field) == 1 && "&#x2714;" || "&#x2718;"}}</div>'},
+        {field:'due_date', displayName:'Due Date'}
+        ]
+    }
+
+    Todo.query({}, function(response) {
+      $scope.todos = response;
+    }, function(response) {});
+  }
+
+  // =========================================================================
+  // Edit
+  // =========================================================================
+  if ($state.current.name === 'edit') {
+    Todo.get({
+      id: $stateParams['id']
+    }, function(response) {
+      return $scope.todo = response;
+    }, function(response) {});
+  }
+
+  // =========================================================================
+  // Update
+  // =========================================================================
+  $scope.update = function() {
+    return Todo.update({
+      id: $stateParams['id']
+    }, {
+      todo: {
+        name: $scope.todo.name,
+        description: $scope.todo.description,
+        priority: $scope.todo.priority,
+        completed: $scope.todo.completed,
+        due_date: $scope.todo.due_date
+      }
+    }, function(response) {
+      return $location.path("/todos");
+    }, function(response) {});
+  };
+
+  // =========================================================================
+  // Create
+  // =========================================================================
+  $scope.create = function() {
+    return Todo.save({}, {
+      todo: {
+        name: $scope.todo.name,
+        description: $scope.todo.description,
+        priority: $scope.todo.priority,
+        completed: $scope.todo.completed,
+        due_date: $scope.todo.due_date
+      }
+    }, function(response) {
+      return $location.path("/todos");
+    }, function(response) {});
+  };
+
+  // =========================================================================
+  // Destroy
+  // =========================================================================
+  $scope.destroy = function() {
+    return Todo.delete({
+      id: $stateParams['id']
+    }, function(response) {
+      return $location.path("/todos");
+    }, function(response) {});
+  };
+
+}]);
