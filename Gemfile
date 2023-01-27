@@ -38,4 +38,4 @@ end
 gem 'twitter-bootstrap-rails'
 
 # User authentication
-gem 'devise', '3.0.0.rc'
+gem 'devise', '3.5.10'
